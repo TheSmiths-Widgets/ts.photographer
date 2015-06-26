@@ -42,7 +42,6 @@ Download this repository and install it:
 
 * Require the widget in a view:
 
-**file1.xml**
 ```xml
 <Widget id="photographer" src="ts.photographer" />`
 ```
