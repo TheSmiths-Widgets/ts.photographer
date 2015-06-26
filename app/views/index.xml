@@ -1,5 +1,8 @@
 <Alloy>
-	<Window class="container">
-		<Label id="label" onClick="doClick">L('welcome')</Label>
-	</Window>
+    <Window>
+	    <View class="container">
+            <Widget id="photographer" src="ts.photographer"/>
+            <Button title="Retrieve Pictures" onClick="retrieve" />
+	    </View>
+    </Window>
 </Alloy>
