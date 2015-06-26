@@ -1,3 +1,16 @@
 <Alloy>
-	<Label>I'm the default widget</Label>
+    <View id="container">
+        <ImageView id="behindPreview" />
+        <ImageView id="preview" /> 
+
+        <View id="discardIcon"/>
+
+        <View id="delimiter"/>
+        <View id="bar">
+            <ScrollView id="thumbnails" />
+            <View id="addContainer">
+                <View id="add" />
+            </View>
+        </View>
+    </View>
 </Alloy>

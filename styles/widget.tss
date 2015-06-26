@@ -1,9 +1,75 @@
-"Label": {
-	color: '#000',
-	font: {
-		fontSize: 18,
-		fontWeight: 'bold'
-	},
-	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+"#container": {
+    width: Ti.UI.FILL,
+}
+
+"#preview": {
+    touchEnabled: false,
+    zIndex: 5,
+}
+
+"#behindPreview": {
+    top: 0,
+    width: Ti.UI.FILL,
+}
+
+"#discardIcon": {
+    zIndex: 3,
+    touchEnabled: false
+}
+
+"#bar": {
+    zIndex: 9,
+    width: Ti.UI.FILL,
+    layout: "horizontal",
+    bottom: 0
+}
+
+"#delimiter": {
+    height: 1,
+    width: Ti.UI.FILL,
+    zIndex: 9,
+}
+
+"#thumbnails": {
+    left: 0,
+    width: 0,
+    layout: "horizontal",
+    showHorizontalScrollIndicator: true
+}
+
+"#thumbnails[platform=android]": {
+    scrollType: "horizontal"
+}
+
+".thumbnail": {
+    right: 0,
+    left: 0
+}
+
+".active": {
+    borderWidth: 2 
+}
+".inactive": {
+    borderWidth: 0
+}
+
+"#add": {
+    height: Ti.UI.FILL,
+    width: Ti.UI.FILL,
+}
+
+".loader": {
+    zIndex: 11,
+    top: 0,
+    width: Ti.UI.FILL,
+    height: Ti.UI.FILL,
+}
+
+"#loaderBackground": {
+    zIndex: 10,
+    opacity: 0.25,
+    top: 0,
+    width: Ti.UI.FILL,
+    height: Ti.UI.FILL,
+    backgroundColor: "#FFFFFF"
 }
