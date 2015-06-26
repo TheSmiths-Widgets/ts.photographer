@@ -1,0 +1,37 @@
+{
+    "version": "1.0.0",
+        "appc-npm": {
+            "config": {
+                "ts.photographer": "1.0"
+            },
+            "target": {
+                "alloy": "app/widgets/ts.photographer"
+            },
+            "ignore": [
+                "package.json"
+                ]
+        },
+        "description": "Take pictures and manage them in a Titanium app.",
+        "author": "The Smiths [Matthias Benkort]",
+        "license": "Apache",
+        "name": "ts.photographer",
+        "scripts": {
+            "postinstall": "node ./appc-npm"
+        },
+        "repository": {
+            "type": "git",
+            "url": "git+https://github.com/thesmiths-widgets/ts.photographer.git"
+        },
+        "bugs": {
+            "url": "https://github.com/thesmiths-widgets/ts.photographer/issues"
+        },
+        "homepage": "https://github.com/thesmiths-widgets/ts.photographer",
+        "keywords": [
+            "alloy",
+            "alloy-widget",
+            "appc-npm",
+            "titanium",
+            "appcelerator",
+            "theSmiths"
+        ]
+}
