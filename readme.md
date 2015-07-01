@@ -66,13 +66,13 @@ $.photographer.init({
     rotateIntensity: $.photographer.HIGH,
 
     
-    animations: {
+    animations: [
         $.photographer.DISCARD_SWIPE_HORIZONTAL,
         $.photographer.DISCARD_ROTATE,
         $.photographer.DISCARD_FADEOUT,
         $.photographer.ADD_SMOOTH,
         $.photographer.CHANGE_FADEOUT
-    }
+    ]
 
 });
 ```
