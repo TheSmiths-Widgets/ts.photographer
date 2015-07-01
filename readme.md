@@ -123,6 +123,7 @@ Initialize the widget.
     - `CHANGE_FADEOUT`: Fadeout the preview when changing to another. 
 
 
+**ANIMATIONS IS AN ARRAY OF ANIMATION CONSTANTS. Please use the constant provided by the widget.**
 
 ## Changelog
 * 1.0 First version
