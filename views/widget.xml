@@ -1,7 +1,7 @@
 <Alloy>
     <View id="container">
         <ImageView id="behindPreview" />
-        <ImageView id="preview" /> 
+        <ImageView id="preview" />
 
         <View id="discardIcon"/>
 
