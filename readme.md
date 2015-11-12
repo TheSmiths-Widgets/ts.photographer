@@ -32,7 +32,7 @@ Download this repository and install it:
 * Be sure to check and install all dependencies.
 
 
-**Or use your favorite package manager** 
+**Or use your favorite package manager**
 
 - [gitTio](http://gitt.io/cli): `gittio install ts.photographer`
 
@@ -65,7 +65,7 @@ $.photographer.init({
     fadeIntensity: $.photographer.NORMAL,
     rotateIntensity: $.photographer.HIGH,
 
-    
+
     animations: [
         $.photographer.DISCARD_SWIPE_HORIZONTAL,
         $.photographer.DISCARD_ROTATE,
@@ -80,7 +80,8 @@ $.photographer.init({
 Here is the list of available methods and options:
 
 #### retrievePictures : `<Image[]>`
-Retrieve all pictures taken by the user as an array of Image. 
+Retrieve all pictures taken by the user as an array of Image (as blob).  
+**Note: ** * eveytime a new picture has been taken, an event `picture` will be triggered (which **doesn't** contains the picture).*
 
 #### init `(options <Object>)`
 Initialize the widget.
@@ -120,7 +121,7 @@ Initialize the widget.
     - `DISCARD_FADEOUT`: Fadeout the picture during the swipe.
     - `ADD_SMOOTH`: Android only, resize smoothly the thumbnail bar when a picture is added /
       removed.
-    - `CHANGE_FADEOUT`: Fadeout the preview when changing to another. 
+    - `CHANGE_FADEOUT`: Fadeout the preview when changing to another.
 
 
 **ANIMATIONS IS AN ARRAY OF ANIMATION CONSTANTS. Please use the constants provided by the widget.**
