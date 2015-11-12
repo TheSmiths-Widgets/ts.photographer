@@ -118,7 +118,7 @@ var _takePicture = _.debounce(function takePicture() {
                 var resolution = Math.max(mediaItem.media.width * mediaItem.media.height / (1024 * 1024), _config.maxResolution);
                     width = Math.floor(mediaItem.media.width * Math.sqrt(_config.maxResolution / resolution)),
                     height = Math.floor(mediaItem.media.height * Math.sqrt(_config.maxResolution / resolution)),
-                    picture = mediaItem.media.imageAsResized(width, height);
+                    picture = mediaItem.media.imageAsResized(width, height),
                     thumbnail = $.UI.create('ImageView', { image: picture });
 
                 thumbnail.applyProperties(_styles.thumbnail);
