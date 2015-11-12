@@ -153,6 +153,9 @@ var _takePicture = _.debounce(function takePicture() {
                 /* Done with the loader, add the thumbnail */
                 _animator.hideLoader();
                 _addThumbnail(thumbnail);
+
+                /* Trigger an event */
+                $.trigger('picture');
             }
         },
 
