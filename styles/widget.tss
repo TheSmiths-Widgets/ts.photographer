@@ -47,7 +47,7 @@
 }
 
 ".active": {
-    borderWidth: 2 
+    borderWidth: 2
 }
 ".inactive": {
     borderWidth: 0

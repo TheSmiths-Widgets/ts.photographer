@@ -13,7 +13,7 @@ function _onTouchStart (e) {
     if ($.thumbnails.children.length === 0 || !_animator.requestToken()) { return; }
     $.behindPreview.removeEventListener('touchmove', _onTouchStart);
 
-    var ref = { x: e.x, y: e.y }, 
+    var ref = { x: e.x, y: e.y },
         lastRatio = 1,
         onTouchMove,
         onTouchEnd;
@@ -23,14 +23,14 @@ function _onTouchStart (e) {
         /* Update last ratio */
         lastRatio = _animator.stepDragAnimation(ref, e);
     }, 50); /* The throttle delay required for Android */
-    
+
     /* Also, we'll bind a listener at the end to either recover a consistent state if nothing
      * happend or ask the user to discard the picture */
     onTouchEnd = function onTouchEnd() {
         /* Remove the listener on touch move, we no longer want to move that picture */
         $.behindPreview.removeEventListener("touchmove", onTouchMove);
         $.behindPreview.removeEventListener("touchend", onTouchEnd);
-            
+
         /* Replace the view and re-bind the initial event*/
         var reset = function reset() {
             /* Recover a consistent about the picture position and effects */
@@ -52,7 +52,7 @@ function _onTouchStart (e) {
              * previously discarded picture */
             $.discardIcon.backgroundImage = _config.undoIcon;
             $.discardIcon.touchEnabled = true;
-            $.discardIcon.addEventListener("singletap", _onUndo); 
+            $.discardIcon.addEventListener("singletap", _onUndo);
 
             /* Remove the image from the bar, and destroy the preview. However, a reference to the
              * image is still accessible via $.preview.thumbnail and will be used to be recoverd
@@ -65,22 +65,22 @@ function _onTouchStart (e) {
             /* Let's add an null thumbnail to force a resize */
             _animator.addThumbnail(null, _animator.releaseToken);
         };
-        
+
         /* Ask for a discard confirmation only if the picture have been moved enough */
         lastRatio < 0.30 ? _confirmDiscard().then(discard, reset) : reset();
     };
 
-    $.behindPreview.addEventListener("touchmove", onTouchMove); 
+    $.behindPreview.addEventListener("touchmove", onTouchMove);
     $.behindPreview.addEventListener("touchend", onTouchEnd);
 }
 
 function _onUndo() {
     _addThumbnail($.preview.thumbnail);
-}; 
+};
 
 function _confirmDiscard() {
     var discardDialog, then;
-        
+
     discardDialog = Ti.UI.createAlertDialog({
         title: _config.discardConfirmTitle,
         buttonNames: [_config.discardConfirmButtonDiscard, _config.discardConfirmButtonCancel],
@@ -97,7 +97,7 @@ function _confirmDiscard() {
         }
     };
 }
-/* Add The thumbnail to the bar, remove the focus on the previous active thumbnail 
+/* Add The thumbnail to the bar, remove the focus on the previous active thumbnail
  * and give it to the new one */
 function _addThumbnail (thumbnail) {
     if (!_animator.requestToken()) { return setTimeout(_addThumbnail, 25); }
@@ -105,20 +105,20 @@ function _addThumbnail (thumbnail) {
 
     $.preview.thumbnail && $.preview.thumbnail.removeFocus();
     thumbnail.focus(done);
-    _animator.addThumbnail(thumbnail, done);  
+    _animator.addThumbnail(thumbnail, done);
 }
 
 var _takePicture = _.debounce(function takePicture() {
     _animator.showLoader();
     Ti.Media.showCamera({
         success: function(mediaItem) {
-            if (mediaItem.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) { 
+            if (mediaItem.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
                 /* As we are gonna store all pictures in memory, we need to resize them to a lower
                  * resolution to prevent the app from memory overflow */
                 var resolution = Math.max(mediaItem.media.width * mediaItem.media.height / (1024 * 1024), _config.maxResolution);
                     width = Math.floor(mediaItem.media.width * Math.sqrt(_config.maxResolution / resolution)),
                     height = Math.floor(mediaItem.media.height * Math.sqrt(_config.maxResolution / resolution)),
-                    picture = mediaItem.media.imageAsResized(width, height);
+                    picture = mediaItem.media.imageAsResized(width, height),
                     thumbnail = $.UI.create('ImageView', { image: picture });
 
                 thumbnail.applyProperties(_styles.thumbnail);
@@ -127,7 +127,7 @@ var _takePicture = _.debounce(function takePicture() {
                 thumbnail.removeFocus = function removeFocus() {
                     this.applyProperties(_styles.inactive);
                 };
-    
+
                 thumbnail.focus = function focus(focusDone) {
                     this.applyProperties(_styles.active);
                     $.preview.thumbnail = this;
@@ -145,7 +145,7 @@ var _takePicture = _.debounce(function takePicture() {
                     if (this !== $.preview.thumbnail && _animator.requestToken()) {
                         $.preview.thumbnail.removeFocus();
                         this.focus(function () {
-                            _animator.releaseToken();   
+                            _animator.releaseToken();
                         });
                     }
                 });
@@ -153,6 +153,9 @@ var _takePicture = _.debounce(function takePicture() {
                 /* Done with the loader, add the thumbnail */
                 _animator.hideLoader();
                 _addThumbnail(thumbnail);
+
+                /* Trigger an event */
+                $.trigger('picture');
             }
         },
 
@@ -168,7 +171,7 @@ var _takePicture = _.debounce(function takePicture() {
 }, 750, true); /* debounce with leading-edge */
 
 var _init = function init(options) {
-    var idealHeight = parseInt(Math.pow(Ti.Platform.displayCaps.platformWidth, 2) / 
+    var idealHeight = parseInt(Math.pow(Ti.Platform.displayCaps.platformWidth, 2) /
         (Ti.Platform.displayCaps.platformHeight * _DENSITY), 10);
 
     _styles = {
@@ -182,11 +185,11 @@ var _init = function init(options) {
     _config = {
         noPreviewBackgroundColor: "#ECF0F1",
         noPreviewIcon: WPATH("picture.png"),
-        previewHeight: idealHeight, 
+        previewHeight: idealHeight,
         thumbnailSize: idealHeight / 4,
         thumbnailSelectedBorderColor: "#F1C40F",
         thumbnailBarBackgroundColor: "#FFFFFF",
-        
+
         addIcon: WPATH("add.png"),
         addBackgroundColor: "#161616",
         delimiterColor: "#161616",
@@ -216,7 +219,7 @@ var _init = function init(options) {
     $.preview.top = _config.previewHeight / 4;
     $.preview._state = _STATES.INIT;
     delete _config.noPreviewIcon; // Not Needed Anymore;
-        
+
     /* Discard element */
     $.discardIcon.height = _config.previewHeight / 4;
     $.discardIcon.width = _config.previewHeight / 4;
@@ -252,11 +255,11 @@ var _init = function init(options) {
 
     /* Main container */
     $.container.height = _config.thumbnailSize + _config.previewHeight;
-   
+
     /* Initialize animations */
     if (options.animations && options.animations.length > 0) {
         for (var i = 0, animation; animation = options.animations[i]; ++i) {
-            _animator.registerAnimation(animation); 
+            _animator.registerAnimation(animation);
         }
     } else {
         _log('warn', ": No animation registered");
@@ -323,11 +326,11 @@ _animator = (function createAnimator() {
         };
 
     /* --------------- CHANGING THE PREVIEW --------------- *
-    *  All handlers related to concerning changing the preview image of the widget  
+    *  All handlers related to concerning changing the preview image of the widget
     * */
     function __beforeChange(newPreview, callback) {
         /* Ensure styles are correct before changing */
-        $.behindPreview.backgroundColor = $.preview._state !== _STATES.DISCARDED ? 
+        $.behindPreview.backgroundColor = $.preview._state !== _STATES.DISCARDED ?
             "transparent" : _config.discardBackgroundColor;
         $.behindPreview.zIndex = $.preview.zIndex + 1;
         $.behindPreview.image = $.preview.image;
@@ -339,7 +342,7 @@ _animator = (function createAnimator() {
             $.preview.top = 0;
             $.preview.height = _config.previewHeight;
             $.preview.width = Ti.UI.FILL;
-            delete _config.previewHeight; // Not Needed Anymore 
+            delete _config.previewHeight; // Not Needed Anymore
         }
 
         if ($.preview._state === _STATES.DISCARDED) {
@@ -358,7 +361,7 @@ _animator = (function createAnimator() {
             });
         } else {
             _.delay(function () {
-                callback();   
+                callback();
             }, 100);
         }
         _.delay(function () {
@@ -399,7 +402,7 @@ _animator = (function createAnimator() {
     };
 
     /* --------------- ADDING A THUMBNAIL ---------------
-     * All handlers related to adding a thumbnail to the bar 
+     * All handlers related to adding a thumbnail to the bar
      * */
     __addHandlers.noAnimation = function noAnimation(thumbnail, callback) {
         if (thumbnail !== null) { $.thumbnails.add(thumbnail); }
@@ -412,7 +415,7 @@ _animator = (function createAnimator() {
         if (OS_IOS) { return __addHandlers.noAnimation(thumbnail, callback); }
 
         if (thumbnail !== null) { $.thumbnails.add(thumbnail); }
-        _.defer(function () { 
+        _.defer(function () {
             $.thumbnails.animate({
                 width: __computeThumbnailsWidth(),
                 duration: __animationSettings.shiftDuration
@@ -448,12 +451,12 @@ _animator = (function createAnimator() {
             if (__animationToken === "FREE") {
                 __animationToken = "TAKEN";
                 return true;
-            } 
+            }
             return false;
         },
 
         releaseToken: function releaseToken () {
-            __animationToken = "FREE"; 
+            __animationToken = "FREE";
         },
 
         registerAnimation: function registerAnimation(animation) {
@@ -540,11 +543,11 @@ _animator = (function createAnimator() {
                         distortOptions.rotate = Math.floor(90*(1-ratio.y)) * (e.y < ref.y ? -1 : 1);
                     }
                     distortOptions.rotate *= __animationSettings.rotateIntensity;
-                }            
+                }
 
                 /* Scale down if scaledown setting; Depends of the swipe type, the scale will be related
                  * to the corresponding ratio (x or y) */
-                if (sd) { 
+                if (sd) {
                     distortOptions.scale = (sv && !sh && ratio.y) || (sh && !sv && ratio.x) || ratio.x * ratio.y;
                     distortOptions.scale = Math.pow(distortOptions.scale, __animationSettings.scaleIntensity);
                 }
@@ -560,14 +563,14 @@ _animator = (function createAnimator() {
 
                     /* The way iOS and Android use the transform matrix is different, a matrix product is
                      * needed on iOS for the translation as the base may have changed due to the rotation */
-                    if (OS_IOS) { 
+                    if (OS_IOS) {
                         transformMatrix = transformMatrix.multiply(Ti.UI.create2DMatrix()
                             .translate(translation.x, translation.y));
                     } else if (OS_ANDROID) {
                         transformMatrix = transformMatrix.translate(translation.x, translation.y);
                     }
                 }
-                
+
                 $.preview.transform = transformMatrix;
             }
 
